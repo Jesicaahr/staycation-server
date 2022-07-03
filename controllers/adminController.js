@@ -334,6 +334,23 @@ module.exports = {
             res.redirect('/admin/item');
         }
     },
+    viewDetailItem: (req, res) => {
+        const {itemId} = req.params
+        try {
+            const alertMessage = req.flash('alertMessage');
+            const alertStatus = req.flash('alertStatus');
+            const alert = { message: alertMessage, status: alertStatus };
+            res.render('admin/item/detail_item/view_detail_item', {
+                alert,
+                title: 'Staycation | Detail Item'
+            })
+            
+        } catch (error) {
+            req.flash('alertMessage', "Success delete item")
+            req.flash('alertStatus', 'success')
+            res.redirect(`/admin/item/show-detail-item/${itemId}`);
+        }
+    },
 
     viewBooking: (req, res) => {
         res.render('admin/booking/view_booking', {
