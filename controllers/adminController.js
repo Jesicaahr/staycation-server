@@ -2,6 +2,8 @@ const Category = require('../models/Category')
 const Bank = require('../models/Bank')
 const Item = require('../models/Item')
 const Image = require('../models/Image')
+const Feature = require('../models/Feature')
+const Activity = require('../models/Activity')
 const fs = require('fs-extra')
 const path = require('path')
 
@@ -342,6 +344,7 @@ module.exports = {
             const alert = { message: alertMessage, status: alertStatus };
             res.render('admin/item/detail_item/view_detail_item', {
                 alert,
+                itemId,
                 title: 'Staycation | Detail Item'
             })
             
@@ -349,6 +352,35 @@ module.exports = {
             req.flash('alertMessage', "Success delete item")
             req.flash('alertStatus', 'success')
             res.redirect(`/admin/item/show-detail-item/${itemId}`);
+        }
+    },
+
+    addFeature: async (req, res) => {
+        const { name, qty, itemId } = req.body
+
+        try {
+            if(!req.file) {
+                req.flash('alertMessage', "Image not found")
+                req.flash('alertStatus', 'danger')
+                res.redirect(`/admin/item/show-detail-item/${itemId}`);
+            }
+            const feature = await Feature.create({
+                name,
+                qty,
+                itemId,
+                imageUrl: `images/${req.file.filename}`
+            })
+
+            const item = await Item.findOne({_id: itemId})
+            item.featureId.push({_id: feature._id})
+            await item.save()
+            req.flash('alertMessage', "Success add feature")
+            req.flash('alertStatus', 'success')
+            res.redirect(`/admin/item/show-detail-item/${itemId}`);
+        } catch (error) {
+            req.flash('alertMessage', `${error.message}`)
+            req.flash('alertStatus', 'danger')
+            res.redirect('/admin/bank');
         }
     },
 
