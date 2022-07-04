@@ -289,7 +289,7 @@ module.exports = {
                 item.description = about
                 item.categoryId = categoryId
                 await item.save()
-                req.flash('alertMessage', "Success edit item")
+                req.flash('alertMessage', "Success edit item") 
                 req.flash('alertStatus', 'success')
                 res.redirect('/admin/item');
             } 
@@ -336,15 +336,17 @@ module.exports = {
             res.redirect('/admin/item');
         }
     },
-    viewDetailItem: (req, res) => {
+    viewDetailItem: async(req, res) => {
         const {itemId} = req.params
         try {
+            const feature = await Feature.find({itemId : itemId})
             const alertMessage = req.flash('alertMessage');
             const alertStatus = req.flash('alertStatus');
             const alert = { message: alertMessage, status: alertStatus };
             res.render('admin/item/detail_item/view_detail_item', {
                 alert,
                 itemId,
+                feature,
                 title: 'Staycation | Detail Item'
             })
             
