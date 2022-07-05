@@ -54,17 +54,26 @@ module.exports = {
             }
 
             res.redirect('/admin/dashboard');
-
         } catch (error) {
             res.redirect('/admin/signin');
         }
+    },
 
+    actionLogout: (req, res) => {
+        req.session.destroy()
+        res.redirect('/admin/signin')
     },
 
     viewDashboard: (req, res) => {
-        res.render('admin/dashboard/view_dashboard', {
-            title: 'Staycation | Dashboard'
-        });
+        try {
+            res.render('admin/dashboard/view_dashboard', {
+                title: 'Staycation | Dashboard',
+                user: req.session.user
+            });
+            
+        } catch (error) {
+            
+        }
     },
 
     viewCategory: async (req, res) => {
@@ -76,7 +85,8 @@ module.exports = {
             res.render('admin/category/view_category', { 
                 category,
                 alert,
-                title: 'Staycation | Category'
+                title: 'Staycation | Category',
+                user: req.session.user
              });
             
         } catch (error) {
@@ -142,7 +152,8 @@ module.exports = {
             res.render('admin/bank/view_bank', {
                 bank,
                 alert,
-                title: 'Staycation | Bank'
+                title: 'Staycation | Bank',
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`)
@@ -234,7 +245,8 @@ module.exports = {
                 alert,
                 category,
                 action: 'view',
-                title: 'Staycation | Item'
+                title: 'Staycation | Item',
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`)
@@ -288,7 +300,8 @@ module.exports = {
                 item,
                 alert,
                 action: 'show image',
-                title: 'Staycation | Show Image Item'
+                title: 'Staycation | Show Image Item',
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`)
@@ -313,7 +326,8 @@ module.exports = {
                 category,
                 alert,
                 action: 'edit',
-                title: 'Staycation | Show Edit Item'
+                title: 'Staycation | Show Edit Item',
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`)
@@ -410,7 +424,8 @@ module.exports = {
                 itemId,
                 feature,
                 activity,
-                title: 'Staycation | Detail Item'
+                title: 'Staycation | Detail Item',
+                user: req.session.user
             })
             
         } catch (error) {
@@ -586,7 +601,8 @@ module.exports = {
 
     viewBooking: (req, res) => {
         res.render('admin/booking/view_booking', {
-            title: 'Staycation | Booking'
+            title: 'Staycation | Booking',
+            user: req.session.user
         });
     },
 }
