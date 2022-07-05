@@ -315,14 +315,22 @@ module.exports = {
         try {
             const {id} = req.params
             const item = await Item.findOne({_id: id}).populate('imageId')
+            const category = await Category.findOne({_id: item.categoryId}).populate('itemId')
+
+            for(let i = 0; i < category.itemId.length; i++) {
+                if(category.itemId[i]._id.toString() == item._id.toString()){
+                    category.itemId.pull({_id: item._id})
+                    await category.save()
+                }
+            }
             for(let i = 0; i < item.imageId.length; i++) {
                 Image.findOne({_id: item.imageId[i]._id}).then((image) => {
                     fs.unlink(path.join(`public/${image.imageUrl}`))
                     image.remove()
                 })
                 .catch((error) => {
-                    req.flash('alertMessage', "Success delete item")
-                    req.flash('alertStatus', 'success')
+                    req.flash('alertMessage', `${error.message}`)
+                    req.flash('alertStatus', 'danger')
                     res.redirect('/admin/item');
                 })
             }
@@ -331,8 +339,8 @@ module.exports = {
             req.flash('alertStatus', 'success')
             res.redirect('/admin/item');
         } catch (error) {
-            req.flash('alertMessage', "Success delete item")
-            req.flash('alertStatus', 'success')
+            req.flash('alertMessage', `${error.message}`)
+            req.flash('alertStatus', 'danger')
             res.redirect('/admin/item');
         }
     },
@@ -340,6 +348,7 @@ module.exports = {
         const {itemId} = req.params
         try {
             const feature = await Feature.find({itemId : itemId})
+            const activity = await Activity.find({itemId : itemId})
             const alertMessage = req.flash('alertMessage');
             const alertStatus = req.flash('alertStatus');
             const alert = { message: alertMessage, status: alertStatus };
@@ -347,6 +356,7 @@ module.exports = {
                 alert,
                 itemId,
                 feature,
+                activity,
                 title: 'Staycation | Detail Item'
             })
             
@@ -437,6 +447,35 @@ module.exports = {
             res.redirect(`/admin/item/show-detail-item/${itemId}`);
         }
 
+    },
+
+    addActivity: async (req, res) => {
+        const { name, type, itemId } = req.body
+
+        try {
+            if(!req.file) {
+                req.flash('alertMessage', "Image not found")
+                req.flash('alertStatus', 'danger')
+                res.redirect(`/admin/item/show-detail-item/${itemId}`);
+            }
+            const activity = await Activity.create({
+                name,
+                type,
+                itemId,
+                imageUrl: `images/${req.file.filename}`
+            })
+
+            const item = await Item.findOne({_id: itemId})
+            item.activityId.push({_id: activity._id})
+            await item.save()
+            req.flash('alertMessage', "Success add activity")
+            req.flash('alertStatus', 'success')
+            res.redirect(`/admin/item/show-detail-item/${itemId}`);
+        } catch (error) {
+            req.flash('alertMessage', `${error.message}`)
+            req.flash('alertStatus', 'danger')
+            res.redirect('/admin/bank');
+        }
     },
 
     viewBooking: (req, res) => {
