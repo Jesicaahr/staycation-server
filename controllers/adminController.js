@@ -5,6 +5,8 @@ const Image = require('../models/Image')
 const Feature = require('../models/Feature')
 const Activity = require('../models/Activity')
 const Users = require('../models/Users')
+const Booking = require('../models/Booking')
+const Member = require('../models/Member')
 const fs = require('fs-extra')
 const path = require('path')
 const bcrypt = require('bcryptjs')
@@ -599,10 +601,27 @@ module.exports = {
 
     },
 
-    viewBooking: (req, res) => {
-        res.render('admin/booking/view_booking', {
-            title: 'Staycation | Booking',
-            user: req.session.user
-        });
+    viewBooking: async (req, res) => {
+        try {
+            const booking = await Booking.find()
+            .populate('memberId')
+            .populate('bankId')
+
+            const alertMessage = req.flash('alertMessage');
+            const alertStatus = req.flash('alertStatus');
+            const alert = { message: alertMessage, status: alertStatus };
+            console.log(booking)
+            res.render('admin/booking/view_booking', {
+                alert,
+                booking,
+                title: 'Staycation | Booking',
+                user: req.session.user
+            });
+        } catch (error) {
+            req.flash('alertMessage', `${error.message}`)
+            req.flash('alertStatus', 'danger')
+            res.redirect('/admin/booking');
+            
+        }
     },
 }
