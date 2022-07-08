@@ -610,7 +610,7 @@ module.exports = {
             const alertMessage = req.flash('alertMessage');
             const alertStatus = req.flash('alertStatus');
             const alert = { message: alertMessage, status: alertStatus };
-            console.log(booking)
+      
             res.render('admin/booking/view_booking', {
                 alert,
                 booking,
@@ -624,7 +624,6 @@ module.exports = {
             
         }
     },
-
     showDetailBooking: async (req,res) => {
         const { id } = req.params
         try {
@@ -632,8 +631,14 @@ module.exports = {
             .populate('memberId')
             .populate('bankId')
 
+            
+            const alertMessage = req.flash('alertMessage');
+            const alertStatus = req.flash('alertStatus');
+            const alert = { message: alertMessage, status: alertStatus };
+
             res.render('admin/booking/show_detail_booking', {
                 booking,
+                alert,
                 title: 'Staycation | Booking',
                 user: req.session.user
             });
@@ -641,6 +646,40 @@ module.exports = {
             req.flash('alertMessage', `${error.message}`)
             req.flash('alertStatus', 'danger')
             res.redirect('/admin/booking');
+        }
+    },
+    actionConfirmation : async (req, res) => {
+        const { id } = req.params
+        try {
+            const booking = await Booking.findOne({_id: id})
+            booking.payments.status = 'Accept';
+            await booking.save()
+
+            req.flash('alertMessage', "Success confirmation payment")
+            req.flash('alertStatus', 'success')
+            res.redirect(`/admin/booking/${id}`);
+            
+        } catch (error) {
+            req.flash('alertMessage', `${error.message}`)
+            req.flash('alertStatus', 'danger')
+            res.redirect(`/admin/booking/${id}`);
+        }
+    },
+    actionReject : async (req, res) => {
+        const { id } = req.params
+        try {
+            const booking = await Booking.findOne({_id: id})
+            booking.payments.status = 'Reject';
+            await booking.save()
+
+            req.flash('alertMessage', "Success reject payment")
+            req.flash('alertStatus', 'success')
+            res.redirect(`/admin/booking/${id}`);
+            
+        } catch (error) {
+            req.flash('alertMessage', `${error.message}`)
+            req.flash('alertStatus', 'danger')
+            res.redirect(`/admin/booking/${id}`);
         }
     }
 }

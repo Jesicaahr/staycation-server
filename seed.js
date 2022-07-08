@@ -1014,7 +1014,7 @@ var data = [
         payments: {
           proofPayment: 'images/buktibayar.jpeg',
           bankFrom: 'BCA',
-          status: 'Proses',
+          status: 'Process',
           accountHolder: 'ang'
         }
       }
