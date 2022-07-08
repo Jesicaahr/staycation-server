@@ -624,4 +624,23 @@ module.exports = {
             
         }
     },
+
+    showDetailBooking: async (req,res) => {
+        const { id } = req.params
+        try {
+            const booking = await Booking.findOne({_id: id}) 
+            .populate('memberId')
+            .populate('bankId')
+
+            res.render('admin/booking/show_detail_booking', {
+                booking,
+                title: 'Staycation | Booking',
+                user: req.session.user
+            });
+        } catch (error) {
+            req.flash('alertMessage', `${error.message}`)
+            req.flash('alertStatus', 'danger')
+            res.redirect('/admin/booking');
+        }
+    }
 }
