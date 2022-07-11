@@ -5,9 +5,11 @@ A server application for booking hotel
 
 ## Tech Stack
 
-**Server:** Node, Express
+**Server:** Node Js, Express Js
 
 **Database:** MongoDB
+
+**Testing:** Mocha, Chai
 
 ## Features
 
@@ -48,5 +50,11 @@ Start the server
 
 ```bash
   npm run dev
+```
+
+For testing
+
+```bash
+  npm run test
 ```
 Go to http://localhost:3000/  on your browser
