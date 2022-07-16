@@ -2,6 +2,7 @@ const chai = require('chai')
 const chaiHttp = require('chai-http')
 const expect = chai.expect
 const app = require('../app')
+const fs = require('fs')
 
 chai.use(chaiHttp)
 
@@ -49,6 +50,48 @@ describe('API ENDPOINT TESTING', () => {
             expect(res.body).to.have.property('testimonial')
             expect(res.body.testimonial).to.be.an('object')
             done()
+        })
+    })
+
+    it('POST Booking Page', (done) => {
+        const image = __dirname + '/buktibayar.png'
+        const dataSample = {
+            image,
+            idItem: '5e96cbe292b97300fc902230',
+            duration: 2,
+            bookingStartDate: '9-4-2023',
+            bookingEndDate: '11-4-2023',
+            firstName: 'jesica',
+            lastName: 'aprilia',
+            email: 'jeje@mail.com',
+            phoneNumber: '081264648989',
+            accountHolder: 'jesica',
+            bankFrom: 'BNI',
+        }
+        chai.request(app).post('/api/v1/member/booking-page')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .field('idItem', dataSample.idItem)
+            .field('duration', dataSample.duration)
+            .field('bookingStartDate', dataSample.bookingStartDate)
+            .field('bookingEndDate', dataSample.bookingEndDate)
+            .field('firstName', dataSample.firstName)
+            .field('lastName', dataSample.lastName)
+            .field('email', dataSample.email)
+            .field('phoneNumber', dataSample.phoneNumber)
+            .field('accountHolder', dataSample.accountHolder)
+            .field('bankFrom', dataSample.bankFrom)
+            .attach('image', fs.readFileSync(dataSample.image), 'buktibayar.png')
+            .end((err,res) => {
+                expect(err).to.be.null
+                expect(res).to.have.status(201)
+                expect(res.body).to.be.an('object')
+                expect(res.body).to.have.property('message')
+                expect(res.body.message).to.equal('Sukses booking')
+                expect(res.body).to.have.property('booking')
+                expect(res.body.booking).to.have.all.keys('payments', '_id', 'invoice', 'bookingStartDate', 'bookingEndDate', 'total', 'itemId', 'memberId', '__v')
+                expect(res.body.booking.payments).to.have.all.keys('status', 'proofPayment', 'bankFrom', 'accountHolder')
+                expect(res.body.booking.itemId).to.have.all.keys('_id', 'title', 'price', 'duration')
+                done()
         })
     })
 })
