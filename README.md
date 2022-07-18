@@ -1,6 +1,7 @@
 # staycation-server
 
 A server application for booking hotel
+link deploy: https://admin-staycation-1818.herokuapp.com/admin/signin
 
 
 ## Tech Stack
