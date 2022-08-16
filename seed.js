@@ -2,46 +2,57 @@ var seeder = require('mongoose-seed');
 var mongoose = require('mongoose');
 
 // Connect to MongoDB via Mongoose
-seeder.connect('mongodb+srv://db_staycation:bwastaycation@cluster0.coejx.mongodb.net/db_travel?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: true,
-  useUnifiedTopology: true
-}, function () {
+seeder.connect(
+  process.env.DATABASE,
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: true,
+    useUnifiedTopology: true,
+  },
+  function () {
+    // Load Mongoose models
+    seeder.loadModels([
+      './models/Category',
+      './models/Bank',
+      './models/Item',
+      './models/Feature',
+      './models/Activity',
+      './models/Member',
+      './models/Image',
+      './models/Member',
+      './models/Booking',
+      './models/Users',
+    ]);
 
-//New connect
-// seeder.connect('mongodb:/localhost:27017/db_staycation', function (){
-
-  // Load Mongoose models
-  seeder.loadModels([
-    './models/Category',
-    './models/Bank',
-    './models/Item',
-    './models/Feature',
-    './models/Activity',
-    './models/Member',
-    './models/Image',
-    './models/Member',
-    './models/Booking',
-    './models/Users'
-  ]);
-
-  // Clear specified collections
-  seeder.clearModels(['Category', 'Bank', 'Item', 'Member', 'Item', 'Feature', 'Image', 'Booking', 'Users'], function () {
-
-    // Callback to populate DB once collections have been cleared
-    seeder.populateModels(data, function () {
-      seeder.disconnect();
-    });
-
-  });
-});
+    // Clear specified collections
+    seeder.clearModels(
+      [
+        'Category',
+        'Bank',
+        'Item',
+        'Member',
+        'Item',
+        'Feature',
+        'Image',
+        'Booking',
+        'Users',
+      ],
+      function () {
+        // Callback to populate DB once collections have been cleared
+        seeder.populateModels(data, function () {
+          seeder.disconnect();
+        });
+      }
+    );
+  }
+);
 
 var data = [
   // start category
   {
-    'model': 'Category',
-    'documents': [
+    model: 'Category',
+    documents: [
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc901111'),
         name: 'Houses with beauty backyard',
@@ -49,8 +60,8 @@ var data = [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902222') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902223') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902224') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902225') }
-        ]
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902225') },
+        ],
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc901112'),
@@ -59,8 +70,8 @@ var data = [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902226') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902227') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902228') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902229') }
-        ]
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902229') },
+        ],
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc901113'),
@@ -69,16 +80,16 @@ var data = [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902230') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902231') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902232') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902233') }
-        ]
-      }
-    ]
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902233') },
+        ],
+      },
+    ],
   },
   // end category
   // start item
   {
-    'model': 'Item',
-    'documents': [
+    model: 'Item',
+    documents: [
       // Tabby Town
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc902222'),
@@ -88,7 +99,8 @@ var data = [
         country: 'Indonesia',
         city: 'Lampung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -96,7 +108,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb2') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb3') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb3') },
         ],
         featureId: [
           // done
@@ -114,15 +126,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa15') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa16') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa16') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb05') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb06') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb07') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb08') },
         ],
-        categoryId: '5e96cbe292b97300fc901111'
+        categoryId: '5e96cbe292b97300fc901111',
       },
       // Seattle Rain
       {
@@ -134,7 +146,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -142,7 +155,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb5') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb6') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb6') },
         ],
         featureId: [
           // done
@@ -160,15 +173,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901111'
+        categoryId: '5e96cbe292b97300fc901111',
       },
 
       // Wodden Pit
@@ -180,7 +193,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -188,7 +202,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb8') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb9') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb9') },
         ],
         featureId: [
           // done
@@ -206,15 +220,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901111'
+        categoryId: '5e96cbe292b97300fc901111',
       },
 
       // Anggana
@@ -226,7 +240,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -234,7 +249,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd11') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd12') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd12') },
         ],
         featureId: [
           // done
@@ -252,15 +267,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901111'
+        categoryId: '5e96cbe292b97300fc901111',
       },
 
       // Green Park
@@ -272,7 +287,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -280,7 +296,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd14') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd15') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd15') },
         ],
         featureId: [
           // done
@@ -298,15 +314,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901112'
+        categoryId: '5e96cbe292b97300fc901112',
       },
 
       // Podo Wae
@@ -318,7 +334,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -326,7 +343,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd17') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd18') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd18') },
         ],
         featureId: [
           // done
@@ -344,15 +361,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901112'
+        categoryId: '5e96cbe292b97300fc901112',
       },
 
       // Silver Rain
@@ -364,7 +381,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -372,7 +390,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd20') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd21') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd21') },
         ],
         featureId: [
           // done
@@ -390,15 +408,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901112'
+        categoryId: '5e96cbe292b97300fc901112',
       },
 
       // Cashville
@@ -410,7 +428,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -418,7 +437,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd23') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd24') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd24') },
         ],
         featureId: [
           // done
@@ -436,15 +455,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901112'
+        categoryId: '5e96cbe292b97300fc901112',
       },
 
       // PS Wood
@@ -456,7 +475,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -464,7 +484,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd26') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd27') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd27') },
         ],
         featureId: [
           // done
@@ -482,15 +502,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901113'
+        categoryId: '5e96cbe292b97300fc901113',
       },
 
       // One Five
@@ -502,7 +522,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -510,7 +531,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd29') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd30') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd30') },
         ],
         featureId: [
           // done
@@ -528,15 +549,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901113'
+        categoryId: '5e96cbe292b97300fc901113',
       },
 
       // Minimal
@@ -548,7 +569,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           // done
@@ -556,7 +578,7 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd31') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd33') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd33') },
         ],
         featureId: [
           // done
@@ -574,15 +596,15 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901113'
+        categoryId: '5e96cbe292b97300fc901113',
       },
 
       // Stays Home
@@ -594,7 +616,8 @@ var data = [
         country: 'Indonesia',
         city: 'Bandung',
         isPopular: false,
-        description: 'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
+        description:
+          'Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.',
         unit: 'night',
         imageId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd36') },
@@ -620,181 +643,180 @@ var data = [
           // done
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa07') },
           // done
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa08') },
         ],
         activityId: [
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb02') },
           { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb03') },
-          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') }
+          { _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb04') },
         ],
-        categoryId: '5e96cbe292b97300fc901113'
+        categoryId: '5e96cbe292b97300fc901113',
       },
-
-    ]
+    ],
   },
   // end item
   // start image
   {
-    'model': 'Image',
-    'documents': [
+    model: 'Image',
+    documents: [
       {
         // done
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb1'),
-        imageUrl: 'images/image-mostpicked-1-min.jpg'
+        imageUrl: 'images/image-mostpicked-1-min.jpg',
       },
       // done
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb2'),
-        imageUrl: 'images/image-mostpicked-2-min.jpg'
+        imageUrl: 'images/image-mostpicked-2-min.jpg',
       },
       // done
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb3'),
-        imageUrl: 'images/image-mostpicked-3-min.jpg'
+        imageUrl: 'images/image-mostpicked-3-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb4'),
-        imageUrl: 'images/image-mostpicked-4-min.jpg'
+        imageUrl: 'images/image-mostpicked-4-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb5'),
-        imageUrl: 'images/item-1.png'
+        imageUrl: 'images/item-1.png',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb6'),
-        imageUrl: 'images/image-mostpicked-5-min.jpg'
+        imageUrl: 'images/image-mostpicked-5-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb7'),
-        imageUrl: 'images/image-mostpicked-7-min.jpg'
+        imageUrl: 'images/image-mostpicked-7-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb8'),
-        imageUrl: 'images/image-mostpicked-8-min.jpg'
+        imageUrl: 'images/image-mostpicked-8-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cdb9'),
-        imageUrl: 'images/image-mostpicked-9-min.jpg'
+        imageUrl: 'images/image-mostpicked-9-min.jpg',
       },
       {
         // done
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd10'),
-        imageUrl: 'images/image-mostpicked-10-min.jpg'
+        imageUrl: 'images/image-mostpicked-10-min.jpg',
       },
       // done
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd11'),
-        imageUrl: 'images/image-mostpicked-11-min.jpg'
+        imageUrl: 'images/image-mostpicked-11-min.jpg',
       },
       // done
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd12'),
-        imageUrl: 'images/image-mostpicked-12-min.jpg'
+        imageUrl: 'images/image-mostpicked-12-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd13'),
-        imageUrl: 'images/image-mostpicked-13-min.jpg'
+        imageUrl: 'images/image-mostpicked-13-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd14'),
-        imageUrl: 'images/image-mostpicked-14-min.jpg'
+        imageUrl: 'images/image-mostpicked-14-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd15'),
-        imageUrl: 'images/image-mostpicked-15-min.jpg'
+        imageUrl: 'images/image-mostpicked-15-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd16'),
-        imageUrl: 'images/image-category-1-min.jpg'
+        imageUrl: 'images/image-category-1-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd17'),
-        imageUrl: 'images/image-category-2-min.jpg'
+        imageUrl: 'images/image-category-2-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd18'),
-        imageUrl: 'images/image-category-3-min.jpg'
+        imageUrl: 'images/image-category-3-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd19'),
-        imageUrl: 'images/image-category-4-min.jpg'
+        imageUrl: 'images/image-category-4-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd20'),
-        imageUrl: 'images/image-category-5-min.jpg'
+        imageUrl: 'images/image-category-5-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd21'),
-        imageUrl: 'images/image-category-6-min.jpg'
+        imageUrl: 'images/image-category-6-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd22'),
-        imageUrl: 'images/image-category-7-min.jpg'
+        imageUrl: 'images/image-category-7-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd23'),
-        imageUrl: 'images/image-category-8-min.jpg'
+        imageUrl: 'images/image-category-8-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd24'),
-        imageUrl: 'images/image-category-9-min.jpg'
+        imageUrl: 'images/image-category-9-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd25'),
-        imageUrl: 'images/image-category-7-min.jpg'
+        imageUrl: 'images/image-category-7-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd26'),
-        imageUrl: 'images/image-category-8-min.jpg'
+        imageUrl: 'images/image-category-8-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd27'),
-        imageUrl: 'images/image-category-9-min.jpg'
+        imageUrl: 'images/image-category-9-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd28'),
-        imageUrl: 'images/image-category-10-min.jpg'
+        imageUrl: 'images/image-category-10-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd29'),
-        imageUrl: 'images/image-category-11-min.jpg'
+        imageUrl: 'images/image-category-11-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd30'),
-        imageUrl: 'images/image-category-12-min.jpg'
+        imageUrl: 'images/image-category-12-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd31'),
-        imageUrl: 'images/image-category-13-min.jpg'
+        imageUrl: 'images/image-category-13-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd32'),
-        imageUrl: 'images/image-category-14-min.jpg'
+        imageUrl: 'images/image-category-14-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd33'),
-        imageUrl: 'images/image-category-15-min.jpg'
+        imageUrl: 'images/image-category-15-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd34'),
-        imageUrl: 'images/image-category-16-min.jpg'
+        imageUrl: 'images/image-category-16-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd35'),
-        imageUrl: 'images/image-category-17-min.jpg'
+        imageUrl: 'images/image-category-17-min.jpg',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cd36'),
-        imageUrl: 'images/image-category-18-min.jpg'
+        imageUrl: 'images/image-category-18-min.jpg',
       },
-    ]
+    ],
   },
   // end image
   // start feature
   {
-    'model': 'Feature',
-    'documents': [
+    model: 'Feature',
+    documents: [
       {
         // done
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90aa01'),
@@ -923,14 +945,14 @@ var data = [
         qty: 5,
         imageUrl: 'images/feature-8.png',
         itemId: mongoose.Types.ObjectId('5e96cbe292b97300fc902223'),
-      }
-    ]
+      },
+    ],
   },
   // end feature
   // start activity
   {
-    'model': 'Activity',
-    'documents': [
+    model: 'Activity',
+    documents: [
       // done
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90bb01'),
@@ -988,15 +1010,15 @@ var data = [
         type: 'Shopping',
         imageUrl: 'images/activity-4.png',
         itemId: mongoose.Types.ObjectId('5e96cbe292b97300fc902223'),
-      }
-    ]
+      },
+    ],
   },
   // end activity
 
   // start booking
   {
-    'model': 'Booking',
-    'documents': [
+    model: 'Booking',
+    documents: [
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc90cee1'),
         bookingStartDate: '12-12-2020',
@@ -1015,66 +1037,66 @@ var data = [
           proofPayment: 'images/buktibayar.jpeg',
           bankFrom: 'BCA',
           status: 'Process',
-          accountHolder: 'ang'
-        }
-      }
-    ]
+          accountHolder: 'ang',
+        },
+      },
+    ],
   },
   // end booking
 
   // member
   {
-    'model': 'Member',
-    'documents': [
+    model: 'Member',
+    documents: [
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc903333'),
         firstName: 'Elfin',
         lastName: 'Sanjaya',
         email: 'elfinsanjaya12@gmail.com',
-        phoneNumber: '082377954008'
+        phoneNumber: '082377954008',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc903334'),
         firstName: 'Yein',
         lastName: 'Narayana',
         email: 'elfinsanjaya1207@gmail.com',
-        phoneNumber: '082377954008'
-      }
-    ]
+        phoneNumber: '082377954008',
+      },
+    ],
   },
   {
-    'model': 'Bank',
-    'documents': [
+    model: 'Bank',
+    documents: [
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc903322'),
         nameBank: 'Mandiri',
         nomorRekening: '089898',
         name: 'elfin',
-        imageUrl: 'images/logo bca.png'
+        imageUrl: 'images/logo bca.png',
       },
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc903323'),
         nameBank: 'BCA',
         nomorRekening: '878678',
         name: 'elfin',
-        imageUrl: 'images/logo mandiri.png'
-      }
-    ]
+        imageUrl: 'images/logo mandiri.png',
+      },
+    ],
   },
   {
-    'model': 'Users',
-    'documents': [
+    model: 'Users',
+    documents: [
       {
         _id: mongoose.Types.ObjectId('5e96cbe292b97300fc903345'),
         username: 'admin',
         password: 'rahasia',
       },
-    //   {
-    //     _id: mongoose.Types.ObjectId('5e96cbe292b97300fc903346'),
-    //     username: 'superadmin',
-    //     password: 'rahasia',
-    //     role: 'admin'
-    //   },
-    ]
-  }
+      //   {
+      //     _id: mongoose.Types.ObjectId('5e96cbe292b97300fc903346'),
+      //     username: 'superadmin',
+      //     password: 'rahasia',
+      //     role: 'admin'
+      //   },
+    ],
+  },
 ];
