@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV == 'development') {
-  require('dotenv').config();
-}
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -12,12 +10,15 @@ const flash = require('connect-flash');
 
 //import mongoose
 const mongoose = require('mongoose');
-mongoose.connect(process.env.DATABASE, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+mongoose.connect(
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.coejx.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  }
+);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
