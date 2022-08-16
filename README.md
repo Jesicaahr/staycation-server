@@ -1,8 +1,7 @@
 # staycation-server
 
 A server application for booking hotel
-link deploy: https://admin-staycation-1818.herokuapp.com/admin/signin
-
+link deploy: https://travel-staycation.herokuapp.com/
 
 ## Tech Stack
 
@@ -41,6 +40,12 @@ Install dependencies
   npm install
 ```
 
+Create .env file and add variables(DB_USER, DB_PASSWORD, DB_NAME)
+
+```bash
+  touc .env
+```
+
 Seed data
 
 ```bash
@@ -58,4 +63,5 @@ For testing
 ```bash
   npm run test
 ```
-Go to http://localhost:3000/  on your browser
+
+Go to http://localhost:3000/ on your browser
